@@ -1,0 +1,58 @@
+services:
+  # migrate_tasks_db:
+  #   depends_on:
+  #     database:
+  #       condition: service_healthy
+  #   image: migrate_tasks_db:dev
+  #   build:
+  #     context: .
+  #     dockerfile: tasks-service/Dockerfile
+  #   environment:
+  #     DB_CONNECTION_URI: mysql://dbuser:admin@database:3306/tasks
+  #   restart: no
+  #   command: yarn prisma migrate dev
+  #   networks:
+  #     - intranet
+  database:
+    image: mariadb:lts
+    restart: always
+    environment:
+      MARIADB_ROOT_PASSWORD: 'root'
+      MARIADB_USER: 'dbuser'
+      MARIADB_PASSWORD: 'admin'
+    healthcheck:
+      interval: 30s
+      retries: 3
+      test:
+        [
+          "CMD",
+          "healthcheck.sh",
+          "--su-mysql",
+          "--connect",
+          "--innodb_initialized"
+        ]
+      timeout: 30s
+    ports:
+      - '3306:3306'
+    expose:
+      - '3306'
+    volumes:
+      - db:/var/lib/mysql
+    networks:
+      - intranet
+  # tasks-service:
+  #   build: ./tasks-service
+  #   restart: unless-stopped
+  #   container_name: tasks_service_container
+  #   environment:
+  #     - DATABASE_URL=mysql://dbuser:admin@database:3306/tasks
+  #   ports:
+  #     - "3000:3000"
+  #   depends_on:
+  #     - database
+  #   networks:
+  #     - intranet
+volumes:
+  db:
+networks:
+  intranet:
