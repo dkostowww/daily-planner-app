@@ -1,0 +1,20 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Debug Tasks Service",
+            "type": "node",
+            "request": "attach",
+            "port": 9229,
+            "skipFiles": [
+                "<node_internals>/**"
+            ]
+        },
+        {
+            "name": "Debug Node application",
+            "type": "node",
+            "request": "attach",
+            "processId": "${command:PickProcess}"
+        }
+    ]
+}

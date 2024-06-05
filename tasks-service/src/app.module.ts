@@ -5,8 +5,8 @@ import { PrismaService } from './services/prisma.service';
 import { TasksService } from './services/tasks.service';
 
 @Module({
-  imports: [ConfigModule.forRoot()],
-  controllers: [TasksController],
-  providers: [PrismaService, TasksService],
+	imports: [ConfigModule.forRoot()],
+	controllers: [TasksController],
+	providers: [PrismaService, TasksService]
 })
 export class AppModule {}
